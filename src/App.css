@@ -1,0 +1,13 @@
+.App {
+    margin: 0 auto;
+}
+
+.App-title {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.create-note {
+    margin: 10px;
+}
