@@ -30,10 +30,10 @@ class CreateProduct extends Component {
         }
     }
 
+    // API call to save the product
     async handleClick() {
-        // event.preventDefault();
-        console.log("Welcome to create product", this.props.token)
         try {
+            // Set the new product
             const newProduct = { ...this.state };
 
             // API call for create product
@@ -41,7 +41,7 @@ class CreateProduct extends Component {
             const response = await API.post(`product`, newProduct);
             if(!response.data.status) throw response.data.message;
 
-            // Handle response and save user object in store
+            // Handle response and save product object in store
             this.props.addProduct(response.data.data);
             this.props.history.replace('/products')
 
@@ -70,15 +70,15 @@ class CreateProduct extends Component {
                         <FormControl onChange={(event) => this.setState({manufacturer: event.target.value})} type="text"
                                      placeholder="Enter Manufacturer"/>
                     </FormGroup>
-                    {/*<FormGroup controlId="formControlsSelect">*/}
-                        {/*<ControlLabel>Category : </ControlLabel>*/}
-                        {/*<FormControl componentClass="select" placeholder="select">*/}
-                            {/*<option value="Select Category">select</option>*/}
-                            {/*{this.props.categories.map((e, key) => {*/}
-                                {/*return <option key={key} value={e.id}>{e.name}</option>;*/}
-                            {/*})}*/}
-                        {/*</FormControl>*/}
-                    {/*</FormGroup>*/}
+                    <FormGroup controlId="formControlsSelect">
+                        <ControlLabel>Category : </ControlLabel>
+                        <FormControl componentClass="select" placeholder="select" onChange={(event)=> this.setState({categoryId: event.target.value})}>
+                            <option value="Select Category">Select Category</option>
+                            { this.props.categories.map((element, key) => {
+                                return <option key={key} value={element.id}>{element.name}</option>;
+                            }) }
+                        </FormControl>
+                    </FormGroup>
                     <FormGroup controlId="formControlsDescription">
                         <ControlLabel>Description : </ControlLabel>
                         <FormControl onChange={(event) => this.setState({description: event.target.value})}

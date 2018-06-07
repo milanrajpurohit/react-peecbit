@@ -4,15 +4,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
-import ReactTable from "react-table";
-import 'react-table/react-table.css'
 import { productsList } from '../actions/index'
 import { Button, Glyphicon } from 'react-bootstrap';
 import API from '../api';
 
 // Access store states via props
 const mapStateToProps = function(state){
-    console.log(state, "chunnnn")
     return {
         token: state.token,
         products: state.products,
@@ -40,7 +37,6 @@ class Product extends Component {
 
     // Rendering component
     render() {
-        console.log("kuttteeeeeeee")
         return (
             <div className="product">
                 <div className="clearfix">
@@ -49,30 +45,31 @@ class Product extends Component {
                         <Link to="/createProduct">Create Product</Link>
                     </Button>
                 </div>
-                {this.props.products}
-                <ReactTable
-                    data={this.props.products}
-                    columns={[
-                        {
-                            Header: 'Name',
-                            accessor: "name"
-                        },
-                        {
-                            Header: 'Price',
-                            accessor: "price"
-                        },
-                        {
-                            Header: 'Description',
-                            accessor: "description"
-                        },
-                        {
-                            Header: 'Manufacturer',
-                            accessor: "manufacturer"
-                        }
-                    ]}
-                />
+                <table className="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Manufacturer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        (this.props.products) ? (
+                            this.props.products.map((product, key) => {
+                                return  <tr key={key}>
+                                    <td>{product.name}</td>
+                                    <td>{product.description}</td>
+                                    <td>{product.price}</td>
+                                    <td>{product.manufacturer}</td>
+                                </tr>
+                            })
+                        ) : "No more products"
+                    }
+                    </tbody>
+                </table>
             </div>
-
         )
     }
 }

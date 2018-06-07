@@ -3,7 +3,8 @@
  *************************************************/
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
@@ -21,13 +22,18 @@ const persistConfig = {
     key: 'root',
     storage,
     stateReconciler: autoMergeLevel2
-}
+};
+
+// To show all redux store states in the redux dev tool
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 // Persistor Reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // Create store for Application and Persistor
-const store = createStore(persistedReducer);
+const store = createStore(persistedReducer, composeEnhancers(
+    applyMiddleware(thunk)
+));
 const persistor = persistStore(store);
 
 // Routing and Provide store to every component
